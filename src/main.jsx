@@ -49,6 +49,11 @@ function App() {
   }, []);
 
   const currentItems = useMemo(() => !activeMap || !category ? [] : data[category].filter((item) => item.map === activeMap && item.side === side), [data, activeMap, category, side]);
+  const filteredLinks = useMemo(() => data.links.filter((item) => (
+    (filters.map === 'all' || item.map === filters.map) &&
+    (filters.side === 'all' || item.side === filters.side) &&
+    (filters.type === 'all' || item.type === filters.type)
+  )), [data.links, filters]);
   const update = (kind, next) => setData((old) => ({ ...old, [kind]: typeof next === 'function' ? next(old[kind]) : next }));
 
   async function save(kind, item, isEdit) {
